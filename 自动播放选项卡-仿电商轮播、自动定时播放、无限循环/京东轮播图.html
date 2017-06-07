@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        li {
+            list-style: none;
+        }
+        
+        img {
+            border: none;
+        }
+        
+        .box {
+            width: 670px;
+            height: 240px;
+            margin: 50px auto;
+            position: relative;
+        }
+        
+        .imgBox img {
+            width: 670px;
+            height: 240px;
+            display: block;
+        }
+        
+        .num {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+        }
+        
+        .num li {
+            float: left;
+            margin-right: 5px;
+            width: 22px;
+            height: 22px;
+            background: #999;
+            color: #FFF;
+            line-height: 22px;
+            text-align: center;
+            border-radius: 50% 50%;
+            font-family: "微软雅黑";
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .num .active {
+            background: #E4393C;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var oDiv = document.getElementById('num');
+            var aLi = oDiv.getElementsByTagName('li');
+            var oImg = document.getElementById('pic');
+            var oBox = document.getElementById('box');
+            var aPath = ['pic1.jpg', 'pic2.jpg', 'pic3.jpg', 'pic4.jpg', 'pic5.jpg', 'pic6.jpg'];
+            var nCurIndex = 0;
+            var timer = null;
+            for (var i = 0; i < aLi.length; i++) {
+                aLi[i].index = i;
+                aLi[i].onclick = function() {
+                    for (var i = 0; i < aLi.length; i++) {
+                        aLi[i].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    changeImg(this.index);
+                    nCurIndex = this.index;
+                };
+            }
+            startSwiper();
+            oBox.onmouseover = function() {
+                clearInterval(timer);
+            };
+            oBox.onmouseout = function() {
+                startSwiper();
+            };
+
+            function startSwiper() {
+                timer = setInterval(function() {
+                    if (nCurIndex < aPath.length - 1) {
+                        nCurIndex++;
+                    } else {
+                        nCurIndex = 0;
+                    }
+                    changeImg(nCurIndex);
+                }, 1000);
+            }
+
+            function changeImg(index) {
+                oImg.src = 'img/' + aPath[index];
+                for (var i = 0; i < aLi.length; i++) {
+                    aLi[i].classList.remove('active');
+                }
+                aLi[index].classList.add('active');
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div id="box" class="box">
+        <div class="imgBox" id="imgs">
+            <a href="javascript:;"><img id="pic" src="img/pic1.jpg" alt=""></a>
+        </div>
+        <ul class="num" id="num">
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+        </ul>
+    </div>
+</body>
+
+</html>

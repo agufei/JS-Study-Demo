@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>张海瑞 - zhanghairui.com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .box {
+            overflow: hidden;
+            width: 966px;
+            margin: 0 auto;
+        }
+        
+        .box ul {
+            float: left;
+            width: 300px;
+            margin: 10px;
+            border: 1px solid red;
+        }
+        
+        .box li {
+            list-style: none;
+            background-color: #ccc;
+            margin: 10px 0;
+            font-size: 50px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var aUl = document.getElementsByTagName('ul');
+            var arr = [];
+            var nCount = 0;
+            for (var i = 0; i < aUl.length; i++) {
+                arr.push(aUl[i]);
+            }
+            appendLis('#ccc');
+            window.onscroll = window.onresize = function() {
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                var clientBottom = scrollTop + document.documentElement.clientHeight;
+                arr.sort(function(ul1, ul2) {
+                    return ul1.offsetHeight - ul2.offsetHeight;
+                });
+                if (arr[0].offsetHeight < clientBottom) {
+                    if (nCount < 40) {
+                        appendLis('red');
+                    } else if (nCount < 60) {
+                        appendLis('green');
+                    } else if (nCount < 80) {
+                        appendLis('blue');
+                    } else {
+                        // return;
+                        appendLis('rgb(' + rnd(0, 255) + ',' + rnd(0, 255) + ',' + rnd(0, 255) + ')');
+                        removeLis(80);
+                    }
+
+                }
+            };
+
+            function appendLis(color) {
+                for (var i = 0; i < 20; i++) {
+                    var oLi = document.createElement('li');
+                    oLi.style.height = rnd(100, 300) + 'px';
+                    oLi.style.background = color;
+                    oLi.innerHTML = nCount;
+                    nCount++;
+
+                    // [ul1, ul2, ul3]
+                    arr.sort(function(ul1, ul2) {
+                        return ul1.offsetHeight - ul2.offsetHeight;
+                    });
+                    arr[0].appendChild(oLi);
+                }
+            }
+
+            function removeLis(toRemain) {
+                for (var i = 0; i < arr.length; i++) {
+                    var aLi = arr[i].children;
+                    for (var j = 0; j < aLi.length; j++) {
+                        if (parseInt(aLi[j].innerHTML) < (nCount - toRemain)) {
+                            console.log('nCount:' + nCount + '/' + aLi[j].innerHTML);
+                            arr[i].removeChild(aLi[j]);
+                            j--;
+                        }
+                    }
+                }
+            }
+
+            function rnd(n, m) {
+                return Math.floor(Math.random() * (m - n) + n);
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="box">
+        <ul></ul>
+        <ul></ul>
+        <ul></ul>
+    </div>
+</body>
+
+</html>

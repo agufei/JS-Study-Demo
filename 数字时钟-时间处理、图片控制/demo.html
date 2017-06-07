@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>张海瑞 - zhanghairui.com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .box {
+            margin: 50px auto;
+            text-align: center;
+        }
+        
+        section {
+            margin: 10px 0;
+        }
+        
+        section:after {
+            display: block;
+            content: '';
+            clear: both;
+        }
+        
+        section div {
+            display: inline-block;
+            margin: 2px;
+        }
+        
+        .num,
+        .num span,
+        .flag {
+            width: 20px;
+            height: 27px;
+            line-height: 27px;
+        }
+        
+        .num {
+            background: url(images/bg.png) no-repeat;
+        }
+        
+        .num span {
+            display: block;
+            height: 100%;
+            text-indent: -999em;
+            background: url(images/num.png) no-repeat;
+            transition: background .5s ease;
+        }
+        
+        .flag {
+            text-align: center;
+            color: #1e7fc3;
+            font-weight: bold;
+        }
+        
+        .num .one {
+            background-position: 0 -27px;
+        }
+        
+        .num .two {
+            background-position: 0 -54px;
+        }
+        
+        .num .three {
+            background-position: 0 -81px;
+        }
+        
+        .num .four {
+            background-position: 0 -108px;
+        }
+        
+        .num .five {
+            background-position: 0 -135px;
+        }
+        
+        .num .six {
+            background-position: 0 -162px;
+        }
+        
+        .num .seven {
+            background-position: 0 -189px;
+        }
+        
+        .num .eight {
+            background-position: 0 -217px;
+        }
+        
+        .num .nine {
+            background-position: 0 -244px;
+        }
+        
+        .num .zero {
+            background-position: 0 0;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var oH2 = document.getElementById('tit');
+            var aNum = document.getElementsByClassName('box')[0].getElementsByTagName('span');
+
+            setInterval(refresh, 1000);
+            refresh();
+
+            function refresh() {
+                var oDate = new Date();
+
+                var year = oDate.getFullYear();
+                var month = oDate.getMonth();
+                var date = oDate.getDate()
+                var h = oDate.getHours();
+                var m = oDate.getMinutes();
+                var s = oDate.getSeconds();
+
+                var str = '' + year + toDb(month + 1) + toDb(date) + toDb(h) + toDb(m) + toDb(s);
+                // oH2.innerHTML = str;
+
+                var aDate = str.split('');
+                for (var i = 0; i < aNum.length; i++) {
+                    aNum[i].className = covt(aDate[i]);
+                    // console.log(covt(aDate[i]));
+                }
+            }
+
+            function toDb(n) {
+                return n < 10 ? '0' + n : '' + n;
+            }
+
+            function covt(str) {
+                switch (str) {
+                    case '1':
+                        return 'one';
+                    case '2':
+                        return 'two';
+                    case '3':
+                        return 'three';
+                    case '4':
+                        return 'four';
+                    case '5':
+                        return 'five';
+                    case '6':
+                        return 'six';
+                    case '7':
+                        return 'seven';
+                    case '8':
+                        return 'eight';
+                    case '9':
+                        return 'nine';
+                    case '0':
+                        return 'zero';
+                }
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <h2 id="tit"></h2>
+    <div class="box">
+        <section>
+            <div class="num"><span class="six">2</span></div>
+            <div class="num"><span class="zero">0</span></div>
+            <div class="num"><span class="one">1</span></div>
+            <div class="num"><span class="seven">7</span></div>
+            <div class="flag">-</div>
+            <div class="num"><span class="zero">0</span></div>
+            <div class="num"><span class="three">3</span></div>
+            <div class="flag">-</div>
+            <div class="num"><span class="two">2</span></div>
+            <div class="num"><span class="four">4</span></div>
+        </section>
+        <section>
+            <div class="num"><span class="zero">0</span></div>
+            <div class="num"><span class="eight">8</span></div>
+            <div class="flag">:</div>
+            <div class="num"><span class="one">1</span></div>
+            <div class="num"><span class="nine">9</span></div>
+            <div class="flag">:</div>
+            <div class="num"><span class="five">5</span></div>
+            <div class="num"><span class="six">6</span></div>
+        </section>
+    </div>
+</body>
+
+</html>

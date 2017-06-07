@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: #000;
+        }
+        
+        .firework {
+            position: absolute;
+            top: -20px;
+            left: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: yellow;
+        }
+        
+        .firework::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 3px;
+            width: 3px;
+            height: 40px;
+            /*background: yellow;*/
+        }
+        
+        .container {
+            position: relative;
+            width: 100px;
+            height: 50px;
+            margin: 500px auto;
+        }
+        
+        .box {
+            position: absolute;
+            left: 38px;
+            bottom: 5px;
+            width: 20px;
+            height: 50px;
+            background: red;
+            border: 2px solid yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box"></div>
+    </div>
+    <script>
+        // 设置定时器，循环执行烟花弹爆炸动画
+        setInterval(function() {
+            // 生成烟花弹
+            var oSpan = $('<span/>').addClass('firework').appendTo($('.box'))
+                // 为烟花弹添加升空动画
+            oSpan.stop().animate({
+                top: -Math.floor(Math.random() * 200 + 200) + 'px'
+            }, 'slow', 'swing', function() {
+                // 在烟花弹升空动画完成后设置烟花弹透明
+                $(this).css({
+                    'background': 'transparent'
+                });
+                // 生成烟花
+                var n = 40 //设置烟花的数量
+                    // 设置烟花颜色
+                var color = 'rgb(' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ')';
+                // 设置烟花的效果、添加到烟花弹内部并执行爆炸动画
+                for (var i = 0; i < n; i++) {
+                    // 设置当前烟花的爆炸距离r和角度a
+                    var r = Math.random() * 100 + 100;
+                    var a = Math.random() * 2 * Math.PI;
+                    // 设置烟花初始效果
+                    $('<i/>').css({
+                        'position': 'absolute',
+                        'left': 2 + 'px',
+                        'top': 2 + 'px',
+                        'width': '5px',
+                        'height': '5px',
+                        'border-radius': '50%',
+                        'background': color
+                            // 设置烟花动画效果
+                    }).stop().animate({
+                        'left': Math.cos(a) * r + 'px',
+                        'top': Math.sin(a) * r + 'px',
+                        'opacity': '.3'
+                    }, {
+                        duration: 1000,
+                        // 动画完成后清除烟花弹和烟花
+                        complete: function() {
+                            if ($(this).index() == n - 1) {
+                                $(this).parent().remove();
+                            }
+                        }
+                    }).appendTo(oSpan);
+                }
+            });
+        }, 500);
+    </script>
+</body>
+
+</html>

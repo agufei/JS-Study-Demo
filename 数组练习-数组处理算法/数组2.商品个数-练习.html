@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var oT1 = document.getElementById('txt1');
+            var oBtn = document.getElementById('btn1');
+            var oT2 = document.getElementById('txt2');
+            oBtn.onclick = function() {
+                var json = {};
+                var arr1 = oT1.value.split(',');
+                for (var i = 0; i < arr1.length; i++) {
+                    var arr2 = arr1[i].split('-');
+                    var sName = arr2[0];
+                    var nPrice = arr2[1];
+                    if (json[sName]) {
+                        json[sName].num++;
+                    } else {
+                        if (arr2[1].indexOf('毛') != -1) {
+                            nPrice = parseInt(nPrice) / 10;
+                        } else {
+                            nPrice = parseFloat(nPrice);
+                        }
+                        json[sName] = {
+                            'price': nPrice,
+                            'num': 1
+                        };
+                    }
+                }
+
+                var str = '';
+                var totle = 0;
+                for (var name in json) {
+                    str += name + ':' + json[name].price + '*' + json[name].num + '=' + json[name].price * json[name].num + '元\n';
+                    totle += json[name].price * json[name].num;
+                }
+                str += '合计' + totle + '元';
+                oT2.value = str;
+            };
+        };
+    </script>
+</head>
+
+<body>
+    输入原始文本(空格隔开)：<br>
+    <textarea style="width:300px; height:200px;" id="txt1">冰红茶-3元,冰绿茶-2.5元,橙汁-1.5元,葡萄汁-5毛,柠檬汁-1.5元,芒果汁-30毛,柠檬汁-1.5元,柠檬汁-1.5元,柠檬汁-1.5元,柠檬汁-1.5元</textarea><br>
+    <br>
+    <input type="button" value="变" id="btn1" /><br>
+    <br> 这里输出结果：
+    <br>
+    <textarea style="width:300px; height:200px;" id="txt2"></textarea>
+</body>
+
+</html>

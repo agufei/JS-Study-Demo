@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body {text-align:center;}
+</style>
+<script>
+window.onload=function (){
+	var oT1=document.getElementById('txt1');
+	var oT2=document.getElementById('txt2');
+	var oBtn=document.getElementById('btn1');
+
+	oBtn.onclick=function (){
+		var json={};
+		var arr=oT1.value.split(' ');
+		// 衣服,运动鞋,篮球鞋,跑步鞋,休闲鞋,帆布鞋,足球鞋,衣服,衣服,衣服,跑步鞋,跑步鞋,跑步鞋,跑步鞋,休闲鞋,帆布鞋,休闲鞋,帆布鞋,休闲鞋,帆布鞋
+		/*
+			json {
+				'衣服':2,
+				'运动鞋':1,
+				篮球鞋:1,
+				跑步鞋:1,
+				休闲鞋:1,
+				帆布鞋:1,
+				足球鞋:1
+			}
+		*/
+		for (var i=0; i<arr.length; i++)
+		{
+			// 衣服
+			var sName=arr[i];
+			// json['衣服'] = 1
+			if (json[sName])
+			{
+				// json['衣服'] = json['衣服'] +1;
+				// json['衣服'] = 1 +1;
+				json[sName]++;
+			}
+			else
+			{
+				// json['篮球鞋']=1
+				json[sName]=1;
+			}
+		}
+
+		// {"衣服":4,"运动鞋":1,"篮球鞋":1,"跑步鞋":5,"休闲鞋":4,"帆布鞋":4,"足球鞋":1}
+		var arr2=[];
+
+		for (var name in json)
+		{
+			// 衣服()
+			arr2.push(name+'('+json[name]+')');
+		}
+
+
+		// 衣服(4)
+		oT2.value=arr2.join('\n');
+	};
+};
+</script>
+</head>
+
+<body>
+输入原始文本(空格隔开)：<br>
+<textarea style="width:300px; height:200px;" id="txt1">衣服 运动鞋 篮球鞋 跑步鞋 休闲鞋 帆布鞋 足球鞋 衣服 衣服 衣服 跑步鞋 跑步鞋 跑步鞋 跑步鞋 休闲鞋 帆布鞋 休闲鞋 帆布鞋 休闲鞋 帆布鞋</textarea><br>
+<br>
+<input type="button" value="变" id="btn1" /><br>
+<br>
+这里输出结果：<br>
+<textarea style="width:300px; height:200px;" id="txt2"></textarea>
+</body>
+</html>

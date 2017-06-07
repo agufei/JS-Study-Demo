@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        
+        .container {
+            width: 380px;
+            margin: 0 auto;
+            padding: 50px 5px;
+        }
+        
+        .container::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        
+        ul {
+            font-size: 0;
+        }
+        
+        li {
+            position: relative;
+            float: left;
+            width: 122px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            /*border-top: 1px solid #999;
+            border-left: 1px solid #345621;
+            border-bottom: 1px solid #003290;
+            border-right: 1px solid #940102;*/
+        }
+        
+        li img {
+            width: 120px;
+            /*margin-left: 1px;*/
+            border: 1px solid transparent;
+            opacity: .6;
+        }
+        
+        li.active img {
+            border: 1px solid deeppink;
+            opacity: 1;
+        }
+        
+        li.active .info {
+            display: block;
+        }
+        
+        .info {
+            position: absolute;
+            left: 122px;
+            top: 0;
+            z-index: 2;
+            width: 125px;
+            height: 102px;
+            background: deeppink;
+            font-size: 18px;
+            color: #fff;
+            text-align: center;
+            line-height: 100px;
+            display: none;
+        }
+        
+        .left {
+            right: 119px;
+            left: auto;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var aLi = document.getElementsByTagName('li');
+            for (var i = 0; i < aLi.length; i++) {
+                aLi[i].onmouseover = function() {
+                    for (var i = 0; i < aLi.length; i++) {
+                        aLi[i].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                };
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <ul>
+            <li>
+                <img src="img/1.jpg" alt="">
+                <div class="info">图1</div>
+            </li>
+            <li>
+                <img src="img/2.jpg" alt="">
+                <div class="info">图2</div>
+            </li>
+            <li>
+                <img src="img/3.jpg" alt="">
+                <div class="info left">图3</div>
+            </li>
+            <li>
+                <img src="img/4.jpg" alt="">
+                <div class="info">图4</div>
+            </li>
+            <li>
+                <img src="img/5.jpg" alt="">
+                <div class="info">图5</div>
+            </li>
+            <li>
+                <img src="img/6.jpg" alt="">
+                <div class="info left">图6</div>
+            </li>
+            <li>
+                <img src="img/7.jpg" alt="">
+                <div class="info">图7</div>
+            </li>
+            <li>
+                <img src="img/8.jpg" alt="">
+                <div class="info">图8</div>
+            </li>
+            <li>
+                <img src="img/9.jpg" alt="">
+                <div class="info left">图9</div>
+            </li>
+            <li>
+                <img src="img/10.jpg" alt="">
+                <div class="info">图10</div>
+            </li>
+            <li>
+                <img src="img/11.jpg" alt="">
+                <div class="info">图11</div>
+            </li>
+            <li>
+                <img src="img/12.jpg" alt="">
+                <div class="info left">图12</div>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文字渐显</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+    <script src="jquery-pow.v.0.1.js"></script>
+    <script src="jquery.easing.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            padding: 100px;
+        }
+        
+        span {
+            position: relative;
+            font-size: 20px;
+            line-height: 40px;
+            color: deepskyblue;
+            text-shadow: 1px 1px 2px #999;
+            opacity: 0;
+        }
+        
+        .info {
+            position: fixed;
+            bottom: 200px;
+            left: 100px;
+            width: 200px;
+            /*height: 200px;*/
+            /*background: #ccc;*/
+            color: aquamarine;
+            font-size: 50px;
+            font-weight: 700;
+            text-align: left;
+            line-height: 80px;
+            text-shadow: 0 0 5px #cecece;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var string = `在此前的自住房摇号中，符合资格的非京籍家庭一般排在自住房所在区的优先家庭和本市其他区户籍家庭之后的第三组，相对于前两组而言，在目前火爆的自住房摇号背景下，能摇中的概率较低。以今天将开始摇号的朝阳自住型商品房“富兴鹏城”为例，摇号的房源共计382套。据了解，本次通过购房资格审核的家庭共150199户，其中第一组朝阳区户籍符合自住房购买条件的经适房和限价房未配售家庭、朝阳区户籍无房家庭共27369户。第二组本市其他区户籍符合自住房购房条件的经适房和限价房未配售的家庭、本市其他区户籍无房家庭、持有效《北京市工作居住证》的无房家庭及驻京部队现役军人和现役武警无房家庭共87803户。第三组其他符合自住房购房条件的家庭共35027户。摇号将按照第一组家庭、第二组家庭、第三组家庭分别摇出所有家庭选房顺序号。业内人士称，非京籍无房家庭大多数归入了第三组，摇中概率较低。`;
+        var aStr = [];
+        for (var i = 0; i < string.length; i++) {
+            aStr.push($('<span/>').html(string.charAt(i)));
+        }
+        $(aStr).each(function(index) {
+            $('body').append($(this));
+        });
+        $('<div/>').addClass('info').appendTo('body');
+        var n = 0;
+        var timer = setInterval(function() {
+            var curSpan = $('span').eq(n);
+            curSpan.css({
+                opacity: .8
+            }).stop().animate({
+                'font-size': '30px'
+            }, {
+                duration: 200
+            }).animate({
+                'opacity': 1,
+                'font-size': '20px',
+                'background': '#ccc'
+            }, {
+                duration: 200,
+                easing: 'easeInOutBack'
+            }).pow();
+            var range = 2;
+            $('body').stop().animate({
+                'padding': (100 + range) + 'px ' + (100 + range) + 'px ' + (100 - range) + 'px ' + (100 - range) + 'px'
+            }, {
+                duration: 50
+            }).animate({
+                'padding': (100 + range) + 'px ' + (100 - range) + 'px ' + (100 - range) + 'px ' + (100 + range) + 'px'
+            }, {
+                duration: 50
+            }).animate({
+                'padding': (100 - range) + 'px ' + (100 + range) + 'px ' + (100 + range) + 'px ' + (100 - range) + 'px'
+            }, {
+                duration: 50
+            }).animate({
+                'padding': '100px'
+            }, {
+                duration: 50
+            });
+            n++;
+            $('.info').html(n).css({
+                'font-size': '50px'
+            }).stop().animate({
+                'font-size': '70px',
+                'left': curSpan.offset().left + 'px',
+                'top': curSpan.offset().top + curSpan.outerHeight() + 'px'
+            }, {
+                duration: 80
+            });
+            if (n == aStr.length) {
+                clearInterval(timer);
+            }
+        }, 200);
+    </script>
+</body>
+
+</html>

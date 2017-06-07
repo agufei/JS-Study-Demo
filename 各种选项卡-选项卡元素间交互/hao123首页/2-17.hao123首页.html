@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>张海瑞 - zhanghairui.com</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            width: 980px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        
+        a {
+            width: 120px;
+            height: 50px;
+            font-size: 18px;
+            display: inline-block;
+            text-align: center;
+            line-height: 50px;
+        }
+        
+        a:link,
+        a:visited,
+        a:hover,
+        a:active {
+            color: #999;
+            text-decoration: none;
+        }
+        
+        .wrap {
+            width: 100%;
+            height: 100%;
+            padding-top: 10px;
+        }
+        
+        .wrap>div {
+            position: relative;
+        }
+        
+        .wrap img {
+            width: 100%;
+        }
+        
+        .channel.active {
+            display: block;
+        }
+        
+        .channel img {
+            display: none;
+        }
+        
+        a.active {
+            color: #fff;
+            background: seagreen;
+        }
+        
+        .channel1 {
+            width: 100%;
+            height: 100%;
+            background: url("img/aa.png")no-repeat top left/100%;
+            display: none;
+        }
+        
+        .channel2 {
+            width: 100%;
+            height: 100%;
+            background: url("img/a.png")no-repeat top right/70%;
+            display: none;
+        }
+        
+        .channel2 img {
+            width: 284px;
+            margin-top: 10px;
+        }
+        
+        .channel2 ul {
+            left: 142px;
+            margin-left: -93px;
+        }
+        
+        .channel3 {
+            width: 100%;
+            height: 100%;
+            background: url("img/b.png")no-repeat top right/21.5%;
+            display: none;
+        }
+        
+        .channel3 img {
+            width: 78%;
+            margin-top: 10px;
+        }
+        
+        .channel3 ul {
+            left: 39%;
+            margin-left: -70px;
+        }
+        
+        .channel4 {
+            width: 100%;
+            height: 100%;
+            background: url("img/c.png")no-repeat top left/100%;
+            display: none;
+        }
+        
+        ul {
+            position: absolute;
+            bottom: 20px;
+            list-style: none;
+        }
+        
+        li {
+            float: left;
+            width: 25px;
+            height: 6px;
+            margin: 10px;
+            background: #999;
+            border: 1px solid #999;
+            cursor: pointer;
+        }
+        
+        li.active {
+            background: seagreen;
+            border: 1px solid seagreen;
+        }
+        
+        img.active {
+            display: block;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // 导航栏添加事件
+            var aATag = document.getElementById('navbar').getElementsByTagName('a');
+            var aChannel = document.getElementsByClassName('channel');
+            addTab(aATag, aChannel);
+
+            // 电视剧轮播添加事件
+            var aTVLi = document.getElementById('TV').getElementsByTagName('li');
+            var aTVImg = document.getElementById('TV').getElementsByTagName('img');
+            addTab(aTVLi, aTVImg);
+
+            // 电影轮播添加事件
+            var aMovieLi = document.getElementById('movie').getElementsByTagName('li');
+            var aMovieImg = document.getElementById('movie').getElementsByTagName('img');
+            addTab(aMovieLi, aMovieImg);
+
+            // 给标签元素添加行为的公共函数
+            // 参数：aTab用来操作标签变化的标签按钮元素数组
+            // 参数：aTabed被标签按钮操作的切换的界面元素对象数组，元素数量需与aTab数组数量一致
+            function addTab(aTab, aTabed) {
+                if (aTab.length === aTabed.length) {
+                    for (var i = 0; i < aTab.length; i++) {
+                        aTab[i].index = i;
+                        aTab[i].onmouseover = function() {
+                            for (var i = 0; i < aTab.length; i++) {
+                                aTab[i].classList.remove('active');
+                                if (aTabed) {
+                                    aTabed[i].classList.remove('active');
+                                }
+                            }
+                            this.classList.add('active');
+                            if (aTabed) {
+                                aTabed[this.index].classList.add('active');
+                            }
+                        };
+                    }
+                } else {
+                    console.log('参数数组元素数量不一致，无法进行操作。请核对参数数组元素数量。');
+                }
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <nav id="navbar">
+            <a href="#" id="btn1" class="active">首页</a>
+            <a href="#" id="btn2">电视剧</a>
+            <a href="#" id="btn3">最新电影</a>
+            <a href="#" id="btn4">新闻头条</a>
+        </nav>
+        <div class="wrap">
+            <div class="channel channel1 active"></div>
+            <div class="channel channel2">
+                <div id="TV" class="swiper">
+                    <img class="active" src="img/a1.jpg" alt="">
+                    <img src="img/a2.jpg" alt="">
+                    <img src="img/a3.jpg" alt="">
+                    <img src="img/a4.jpg" alt="">
+                    <ul>
+                        <li class="active"></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="channel channel3">
+                <div id="movie" class="swiper">
+                    <img class="active" src="img/1.png" alt="">
+                    <img src="img/2.png" alt="">
+                    <img src="img/3.png" alt="">
+                    <ul>
+                        <li class="active"></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="channel channel4"></div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    position: relative;
+    width: 980px;
+    margin: 50px auto;
+}
+
+.pic-wrap {
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 400px;
+    height: 464px;
+    border: 1px solid #ccc;
+}
+
+.pic {
+    width: 400px;
+    height: 400px;
+    cursor: pointer;
+}
+
+.pic img {
+    width: 400px;
+    height: 400px;
+    display: none;
+}
+
+.pic img.active {
+    display: block;
+}
+
+.pic span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    display: none;
+    background: url("images/dot-bg.png") repeat scroll 0 0 transparent;
+    opacity: .5;
+}
+
+.pic-wrap ul {
+    list-style: none;
+    margin: 5px;
+    overflow: hidden;
+}
+
+.pic-wrap li {
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-right: 3px;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.pic-wrap li.active {
+    border: 2px solid orangered;
+}
+
+.show {
+    position: absolute;
+    top: 0;
+    left: 460px;
+    width: 400px;
+    height: 400px;
+    display: none;
+    background-image: url("images/1-big.jpg");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    /*border: 1px solid #ccc;*/
+}

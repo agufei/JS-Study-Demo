@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>蘑菇街</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        .container {
+            position: relative;
+            width: 750px;
+            height: 300px;
+            margin: 50px auto 0;
+            overflow: hidden;
+        }
+        
+        .pic {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 600px;
+            height: 100%;
+            border: 1px solid #999;
+        }
+        
+        .pic img {
+            width: 600px;
+        }
+        
+        ul {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 100%;
+            list-style: none;
+            font-size: 16px;
+        }
+        
+        li {
+            position: relative;
+            height: 20%;
+            padding: 5px 10px;
+            border-bottom: 1px solid #ccc;
+            color: #fff;
+            line-height: 24px;
+            background: #555;
+            cursor: pointer;
+        }
+        
+        li small {
+            display: block;
+        }
+        
+        .active {
+            left: -10px;
+            z-index: 10;
+            width: 160px;
+            padding-left: 20px;
+            background: hotpink;
+        }
+        
+        .active::before {
+            position: absolute;
+            top: 50%;
+            left: -5px;
+            content: '';
+            display: block;
+            width: 0px;
+            height: 0px;
+            margin-top: -4px;
+            border-top: 6px solid transparent;
+            border-right: 6px solid hotpink;
+            border-bottom: 6px solid transparent;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var aLi = document.getElementsByTagName('li');
+            var oPic = document.getElementById('pic-img');
+            for (var i = 0; i < aLi.length; i++) {
+                aLi[i].index = i;
+                aLi[i].onmouseover = function() {
+                    for (var i = 0; i < aLi.length; i++) {
+                        aLi[i].className = '';
+                    }
+                    this.className = 'active';
+                    oPic.src = 'img/' + (this.index + 1) + '.png';
+                };
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="pic" class="pic"><img id="pic-img" src="img/1.png"></div>
+        <ul>
+            <li class="active">时髦新品<small>天天见</small></li>
+            <li>简约之美<small>约克郡的优雅</small></li>
+            <li>HOLLOW风潮<small>性感一夏</small></li>
+            <li>“公主病”万岁<small>免费游迪士尼</small></li>
+            <li>纯棉立体<small>小清新T恤</small></li>
+        </ul>
+    </div>
+</body>
+
+</html>

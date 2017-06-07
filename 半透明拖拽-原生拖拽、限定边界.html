@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .div1 {
+            position: fixed;
+            top: 100px;
+            left: 100px;
+            width: 100px;
+            height: 100px;
+            background: red;
+            color: #fff;
+            font-size: 20px;
+            line-height: 100px;
+            text-align: center;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var oDiv = document.getElementById('div1');
+            oDiv.onmousedown = function(ev) {
+                var oEvent = ev || event;
+                var disX = oEvent.clientX - oDiv.offsetLeft;
+                var disY = oEvent.clientY - oDiv.offsetTop;
+                var nMaxWidth = document.documentElement.clientWidth - oDiv.offsetWidth;
+                var nMaxHeight = document.documentElement.clientHeight - oDiv.offsetHeight;
+                var oLike = oDiv.cloneNode(true);
+                oLike.removeAttribute('id'); //清除复制时候重复的id
+                oLike.style.opacity = '.5';
+                oLike.style.zIndex = '2';
+                oDiv.parentNode.insertBefore(oLike, oDiv);
+                document.onmousemove = function(ev) {
+                    var oEvent = ev || event;
+                    var left = oEvent.clientX - disX;
+                    var top = oEvent.clientY - disY;
+                    if (left < 0) {
+                        left = 0;
+                    } else if (left > nMaxWidth) {
+                        left = nMaxWidth;
+                    }
+                    if (top < 0) {
+                        top = 0;
+                    } else if (top > nMaxHeight) {
+                        top = nMaxHeight;
+                    }
+                    oLike.style.left = left + 'px';
+                    oLike.style.top = top + 'px';
+                };
+                document.onmouseup = function() {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                    oDiv.style.left = oLike.offsetLeft + 'px';
+                    oDiv.style.top = oLike.offsetTop + 'px';
+                    oLike.parentNode.removeChild(oLike);
+
+                };
+                // oLike.onmouseup = function() {
+                // };
+
+            };
+            document.onmousedown = function() {
+                return false; //防止鼠标按下选中文字
+            };
+        };
+    </script>
+</head>
+
+<body>
+    <div id="div1" class="div1">透明拖动</div>
+</body>
+
+</html>

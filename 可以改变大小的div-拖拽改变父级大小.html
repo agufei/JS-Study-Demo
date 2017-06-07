@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .div1 {
+            position: absolute;
+            top: 50px;
+            left: 100px;
+            width: 200px;
+            height: 200px;
+            background: cornflowerblue;
+            font-size: 20px;
+            text-align: center;
+            line-height: 200px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            border: 2px solid #999;
+            cursor: move;
+        }
+        
+        .span1 {
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+            width: 0;
+            height: 0;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #000 #000 transparent;
+            cursor: se-resize;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var oDiv = document.getElementById('div1');
+            var oSpan = document.getElementById('span1');
+            oSpan.onmousedown = function(ev) {
+                var oEvent = ev || event;
+                var disX = oEvent.clientX - getPos(this).left;
+                var disY = oEvent.clientY - getPos(this).top;
+                var spanOffsetDivX = getStyle(oDiv, 'width') - oSpan.offsetLeft;
+                var spanOffsetDivY = getStyle(oDiv, 'height') - oSpan.offsetTop;
+                oEvent.cancelBubble = true;
+                document.onmousemove = function(ev) {
+                    var oEvent = ev || event;
+                    var left = oEvent.clientX - disX - getPos(oDiv).left;
+                    var top = oEvent.clientY - disY - getPos(oDiv).top;
+                    if (left < 5) {
+                        left = 5;
+                    }
+                    if (top < 5) {
+                        top = 5;
+                    }
+                    oSpan.style.left = left + 'px';
+                    oSpan.style.top = top + 'px';
+                    oDiv.style.width = left + spanOffsetDivX + 'px';
+                    oDiv.style.height = top + spanOffsetDivY + 'px';
+                    oDiv.style.lineHeight = top + spanOffsetDivY + 'px';
+                };
+                document.onmouseup = function() {
+                    document.onmousemove = null; //终止span跟随鼠标
+                };
+                return false; //防止鼠标拖动时选中文字
+            };
+
+            oDiv.onmousedown = function(ev) {
+                var oEvent = ev || event;
+                var disX = oEvent.clientX - getPos(this).left;
+                var disY = oEvent.clientY - getPos(this).top;
+
+                document.onmousemove = function(ev) {
+                    var oEvent = ev || event;
+                    var left = oEvent.clientX - disX;
+                    var top = oEvent.clientY - disY;
+                    if (left < 20) {
+                        left = 0;
+                    }
+                    if (top < 20) {
+                        top = 0;
+                    }
+                    oDiv.style.left = left + 'px';
+                    oDiv.style.top = top + 'px';
+                }
+                document.onmouseup = function() {
+                    document.onmousemove = null;
+                };
+                return false;
+            };
+
+            function getPos(obj) {
+                var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                var left = obj.getBoundingClientRect().left + scrollLeft - document.documentElement.clientLeft;
+                var top = obj.getBoundingClientRect().top + scrollTop - document.documentElement.clientTop;
+                return {
+                    left: left,
+                    top: top
+                };
+            }
+
+            function getStyle(obj, sName) {
+                if (obj.currentStyle) {
+                    return parseFloat(obj.currentStyle[sName]);
+                } else {
+                    return parseFloat(getComputedStyle(obj, false)[sName]);
+                }
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div id="div1" class="div1">
+        拖动鼠标移动，拖动右下角缩放
+        <span id="span1" class="span1"></span>
+    </div>
+</body>
+
+</html>

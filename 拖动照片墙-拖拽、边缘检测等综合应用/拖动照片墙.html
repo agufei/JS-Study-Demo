@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>拖动照片墙</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+    <script src="jquery.easing.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        ul {
+            width: 510px;
+            height: 510px;
+            margin: 50px auto;
+            border: 1px solid #000;
+        }
+        
+        li {
+            position: relative;
+            float: left;
+            width: 150px;
+            height: 150px;
+            margin: 10px;
+            background-color: #ccc;
+            list-style: none;
+            font-size: 30px;
+        }
+        
+        img {
+            display: block;
+            width: 100%;
+        }
+        
+        span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            line-height: 150px;
+            font-size: 50px;
+            color: red;
+            background-color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+        }
+        
+        .active {
+            border: 5px dashed red;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li><img src="cat/1.jpg" alt=""></li>
+        <li><img src="cat/2.jpg" alt=""></li>
+        <li><img src="cat/3.jpg" alt=""></li>
+        <li><img src="cat/4.jpg" alt=""></li>
+        <li><img src="cat/5.jpg" alt=""></li>
+        <li><img src="cat/6.jpg" alt=""></li>
+        <li><img src="cat/7.jpg" alt=""></li>
+        <li><img src="cat/8.jpg" alt=""></li>
+        <li><img src="cat/9.jpg" alt=""></li>
+    </ul>
+    <script>
+        var aLi = $('li');
+
+        // aLi.each(function(index) {
+        //     $('<span/>').html(index).appendTo(this);
+        // });
+
+        // 布局转换（难点）
+        // 在float布局下，通过js将每个li的位置存下来并赋给每个li，并将li再设置为定位布局，
+        // 从而既得到了浮动式的排布方式又能通过js改变li的top和left值进而控制其位置
+        var aPos = [];
+        aLi.each(function() {
+            aPos.push({
+                left: $(this).offset().left,
+                top: $(this).offset().top
+            });
+        });
+        aLi.each(function(index) {
+            $(this).css({
+                'top': aPos[index].top + 'px',
+                'left': aPos[index].left + 'px',
+                'position': 'absolute',
+                'margin': 0
+            });
+        });
+
+        // 设置拖动
+        aLi.each(function() {
+            drag($(this));
+        });
+        var zIndex = 0;
+
+        function drag(obj) {
+            obj.mousedown(function(ev) {
+                zIndex++;
+                var oNear = null;
+                var disX = ev.clientX - obj.offset().left;
+                var disY = ev.clientY - obj.offset().top;
+                $(document).mousemove(_move);
+                $(document).mouseup(_up);
+
+
+                function _move(ev) {
+                    var left = ev.clientX - disX;
+                    var top = ev.clientY - disY;
+                    obj.css({
+                        'left': left + 'px',
+                        'top': top + 'px',
+                        'z-index': zIndex
+                    });
+
+                    // 找最近图片
+                    oNear = findNear(obj);
+                    aLi.removeClass('active');
+                    if (oNear) {
+                        oNear.addClass('active');
+                    }
+
+                }
+
+                function _up() {
+                    // 交换位置
+                    aLi.removeClass('active');
+                    if (oNear) {
+                        // 克隆一个obj的副本占据obj原来在DOM中的位置
+                        var oLi = obj.clone();
+                        oLi.insertAfter(obj);
+                        // 将obj插入oNear处
+                        obj.insertAfter(oNear);
+                        // 通过替换obj的副本将oNear移至原来obj的位置，实现DOM中位置交换
+                        oLi.replaceWith(oNear);
+                        // 通过原来记录的位置数组中的位置数据，将两个对象移动到其应该在的原始位置
+                        // 实现实际显示位置交换
+                        obj.stop().animate({
+                            left: aPos[obj.index()].left + 'px',
+                            top: aPos[obj.index()].top + 'px'
+                        });
+                        oNear.stop().animate({
+                            left: aPos[oNear.index()].left + 'px',
+                            top: aPos[oNear.index()].top + 'px'
+                        });
+                    } else {
+                        // 图标自动回位
+                        obj.stop().animate({
+                            left: aPos[obj.index()].left + 'px',
+                            top: aPos[obj.index()].top + 'px'
+                        }, {
+                            duration: 500,
+                            easing: 'easeOutCubic'
+                        });
+                    }
+
+                    $(document).off('mousemove', _move);
+                    $(document).off('mouseup', _up);
+                }
+                return false;
+            });
+        }
+
+        function findNear(obj) {
+            var nMin = Infinity;
+            var oNear = null;
+            aLi.each(function() {
+                if (this != obj[0]) {
+                    if (bundTest($(this), obj)) {
+                        var dis = getDis($(this), obj);
+                        if (dis < nMin) {
+                            nMin = dis;
+                            oNear = $(this);
+                        }
+                    }
+                }
+            });
+            return oNear;
+        }
+
+        function getDis(obj1, obj2) {
+            var l1 = obj1.offset().left + obj1.outerWidth() / 2;
+            var l2 = obj2.offset().left + obj2.outerWidth() / 2;
+            var t1 = obj1.offset().top + obj1.outerHeight() / 2;
+            var t2 = obj2.offset().top + obj2.outerHeight() / 2;
+            var a = l1 - l2;
+            var b = t1 - t2;
+            return Math.sqrt(a * a + b * b);
+        }
+
+        // 碰撞检测（难点）
+        function bundTest(obj1, obj2) {
+            // 通过比较两个对象的边距，确定不碰撞的情况，剩余的就是产生碰撞的情况。
+            // 不碰撞的条件就是obj1在obj2的四条边之外部分形成的任一区域内
+            var l1 = obj1.offset().left;
+            var t1 = obj1.offset().top;
+            var r1 = l1 + obj1.outerWidth();
+            var b1 = t1 + obj1.outerHeight();
+
+            var l2 = obj2.offset().left;
+            var t2 = obj2.offset().top;
+            var r2 = l2 + obj2.outerWidth();
+            var b2 = t2 + obj2.outerHeight();
+
+            if (l1 > r2 || t1 > b2 || r1 < l2 || b1 < t2) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+</body>
+
+</html>
